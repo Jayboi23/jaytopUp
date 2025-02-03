@@ -3,6 +3,8 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CardItem from "../../components/CardItem";
+import Swiper from 'react-native-swiper'
+import { router } from "expo-router";
 
 export default function home() {
   return (
@@ -27,13 +29,43 @@ export default function home() {
 
       </View>
 
-      <View className="mt-24 flex-row justify-around">
-        <CardItem textIcon="₦" title="Fund Wallet" />
+      <View className="mt-24 flex-row justify-around mb-5">
+        <CardItem textIcon="₦" title="Fund Wallet" handlePress={() => router.push("/fundingScreen")}/>
 
-        <CardItem icon="call" title="Buy Airtime" />
+        <CardItem icon="call" title="Buy Airtime" handlePress={() => router.push("/buyAirtimeScreen")}/>
 
-        <CardItem icon="cell-wifi" title="Buy Data" />
+        <CardItem icon="cell-wifi" title="Buy Data" handlePress={() => router.push("/buyDataScreen")}/>
+
+        <CardItem icon="history" title="View History" handlePress={() => router.push("/historyScreen")}/>
       </View>
+
+      <View className="w-[95%] self-center h-[15%]">
+      <Swiper 
+      autoplay 
+      className="rounded-xl">
+        <View className="bg-primary w-full h-full items-center justify-center">
+        <Text className="text-2xl font-rMedium text-white">Advertise </Text>
+        </View>
+        <View className="bg-primary w-full h-full items-center justify-center">
+        <Text className="text-2xl font-rMedium text-white">your</Text>
+        </View>
+        <View className="bg-primary w-full h-full items-center justify-center">
+        <Text className="text-2xl font-rMedium text-white"> business </Text>
+        </View>
+        <View className="bg-primary w-full h-full items-center justify-center">
+        <Text className="text-2xl font-rMedium text-white"> here! </Text>
+        </View>
+        <View className="bg-primary w-full h-full items-center justify-center">
+        <Text className="text-xl font-rMedium text-white">Chat us on Whatsapp 08156136183 </Text>
+        </View>
+      </Swiper>
+      </View>
+    
+
+      {/* <View className="bg-primary h-56 w-[95%] self-center rounded-xl items-center justify-center">
+        <Text className="text-2xl font-rMedium text-white">Advertise your business here! </Text>
+        <Text className="text-xl font-rMedium text-white">Chat on Whatsapp 08156136183 </Text>
+      </View> */}
 
       <StatusBar style="light" />
     </View>
