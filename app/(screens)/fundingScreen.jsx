@@ -6,23 +6,23 @@ const data = [
   {
     id: "1",
     title: "Deposited to wallet",
-    amount: "500",
+    amount: "+500",
     timeStamp: "09:08 pm",
-    transactionId: "PAY1753211532",
+    transactionId: "PAYSTACK1753211532",
   },
   {
     id: "2",
     title: "Deposited to wallet",
-    amount: "500",
+    amount: "+500",
     timeStamp: "09:08 pm",
-    transactionId: "PAY1753211532",
+    transactionId: "PAYSTACK1753211532",
   },
   {
     id: "3",
     title: "Deposited to wallet",
-    amount: "500",
+    amount: "+500",
     timeStamp: "09:08 pm",
-    transactionId: "PAY1753211532",
+    transactionId: "PAYSTACK1753211532",
   },
 ];
 
@@ -55,18 +55,19 @@ export default function fundingScreen() {
       <Text className="font-rRegular text-xl mb-3">Latest Transactions</Text>
 
       <View>
+       
         <ScrollView>
         
             {data.map((item) => (
               <View id={item.id} className="w-full p-5 bg-bgButton mb-3 gap-y-3 rounded-lg">
                 <View className="flex-row justify-between">
                   <Text className="font-rMedium text-base">{item.transactionId}</Text>
-                  <Text className="font-rMedium text-base">{item.amount}</Text>
+                  <Text className="font-rMedium text-base text-green-700">{item.amount}</Text>
                 </View>
 
                 <View className="flex-row justify-between">
-                  <Text>{item.title}</Text>
-                  <Text>{item.timeStamp}</Text>
+                  <Text className="font-rRegular text-base">{item.title}</Text>
+                  <Text className="font-rRegular text-base">{item.timeStamp}</Text>
                 </View>
               </View>
             ))}
