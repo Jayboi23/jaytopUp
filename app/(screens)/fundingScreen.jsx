@@ -49,7 +49,11 @@ export default function fundingScreen() {
           className="w-[95%] bg-transparent border border-bgButton h-14 font-rRegular text-lg text-white px-3 rounded-xl mb-10"
         />
 
-        <Button title="Pay Now" />
+        <Button 
+        title="Pay Now" 
+        containerStyle="bg-white"
+        textStyles="text-primary"
+        />
       </View>
 
       <Text className="font-rRegular text-xl mb-3">Latest Transactions</Text>

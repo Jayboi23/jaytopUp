@@ -7,7 +7,15 @@ export default function _layout() {
   return (
     <Stack>
       <Stack.Screen name='home' options={{headerShown: false}}/>
-      <Stack.Screen name='buyAirtimeScreen' options={{headerShown: false}}/>
+      <Stack.Screen name='buyAirtimeScreen' 
+      options={{
+        headerBackTitle: "Back",
+        headerTitle: "Buy Airtime",
+        headerStyle: {
+          backgroundColor: '#4169e1'
+        },
+        headerTintColor: "#fff"
+      }}/>
       <Stack.Screen name='buyDataScreen' options={{headerShown: false}}/>
       <Stack.Screen name='fundingScreen' 
       options={{
