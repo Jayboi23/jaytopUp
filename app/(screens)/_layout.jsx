@@ -16,7 +16,15 @@ export default function _layout() {
         },
         headerTintColor: "#fff"
       }}/>
-      <Stack.Screen name='buyDataScreen' options={{headerShown: false}}/>
+      <Stack.Screen name='buyDataScreen' 
+      options={{
+        headerBackTitle: "Back",
+        headerTitle: "Buy Data",
+        headerStyle: {
+        backgroundColor: "#4169e1"
+        },
+        headerTintColor: "#fff"
+      }}/>
       <Stack.Screen name='fundingScreen' 
       options={{
         headerBackTitle: "Back",
