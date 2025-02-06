@@ -30,7 +30,7 @@ export default function buyAirtimeScreen() {
 
       <Button
       title="Buy"
-      containerStyle="bg-primary self-center h-14"
+      containerStyle="bg-primary self-center w-full h-14"
       textStyles="text-white"
       />
 

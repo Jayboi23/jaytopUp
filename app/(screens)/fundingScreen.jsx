@@ -51,7 +51,7 @@ export default function fundingScreen() {
 
         <Button 
         title="Pay Now" 
-        containerStyle="bg-white"
+        containerStyle="bg-white w-[95%]"
         textStyles="text-primary"
         />
       </View>
@@ -63,7 +63,7 @@ export default function fundingScreen() {
         <ScrollView>
         
             {data.map((item) => (
-              <View key={item.id} className="w-full p-5 bg-bgButton mb-3 gap-y-3 rounded-lg">
+              <View key={item.id} className="w-full p-3 bg-bgButton/40 mb-3 gap-y-2 rounded-lg">
                 <View className="flex-row justify-between">
                   <Text className="font-rMedium text-base">{item.transactionId}</Text>
                   <Text className="font-rMedium text-base text-green-700">{item.amount}</Text>

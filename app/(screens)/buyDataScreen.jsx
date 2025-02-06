@@ -24,7 +24,7 @@ export default function buyDataScreen() {
       />
     </View>
 
-    <View className="mt-5 mb-5">
+    <View className="mb-5">
       <SelectList
         setSelected={(val) => setSelected(val)}
         placeholder="Data Plan"
@@ -40,7 +40,7 @@ export default function buyDataScreen() {
 
     <Button
     title="Buy"
-    containerStyle="bg-primary self-center h-14"
+    containerStyle="bg-primary w-full self-center h-14"
     textStyles="text-white"
     />
 
