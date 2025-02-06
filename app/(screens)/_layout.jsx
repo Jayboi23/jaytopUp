@@ -34,7 +34,15 @@ export default function _layout() {
           backgroundColor: "#4169e1"
         }
         }}/>
-      <Stack.Screen name='historyScreen' options={{headerShown: false}}/>
+      <Stack.Screen name='historyScreen' 
+      options={{
+        headerTitle: "Transaction History",
+        headerStyle: {
+          backgroundColor: "#4169e1"
+        },
+        headerTintColor: "#fff",
+        
+      }}/>
     </Stack>
   )
 }

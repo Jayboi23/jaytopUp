@@ -1,6 +1,6 @@
 import { View, Text, TextInput, ScrollView } from "react-native";
 import React from "react";
-import Button from "../../components/Button";
+import Button from "../../components/CustomButton";
 
 const data = [
   {
@@ -63,7 +63,7 @@ export default function fundingScreen() {
         <ScrollView>
         
             {data.map((item) => (
-              <View id={item.id} className="w-full p-5 bg-bgButton mb-3 gap-y-3 rounded-lg">
+              <View key={item.id} className="w-full p-5 bg-bgButton mb-3 gap-y-3 rounded-lg">
                 <View className="flex-row justify-between">
                   <Text className="font-rMedium text-base">{item.transactionId}</Text>
                   <Text className="font-rMedium text-base text-green-700">{item.amount}</Text>

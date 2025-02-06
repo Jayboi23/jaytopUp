@@ -1,7 +1,7 @@
 import { View, Text, TextInput } from "react-native";
 import React, { useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
-import Button from "../../components/Button"
+import Button from "../../components/CustomButton"
 
 const data = [
   { key: "1", value: "MTN" },
