@@ -1,12 +1,18 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import { StatusBar } from "expo-status-bar";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from '@expo/vector-icons/Entypo';
 import CardItem from "../../components/CardItem";
 import Swiper from 'react-native-swiper'
 import { router } from "expo-router";
 
 export default function home() {
+  const [eyeClicked, setEyeClicked] = useState(false)
+
+  const handleEyeClicked = () =>{
+    setEyeClicked(!eyeClicked)
+  }
+
   return (
     <View className="flex-1 bg-white">
       
@@ -20,11 +26,11 @@ export default function home() {
         <View className="bg-white shadow h-32 self-center w-[95%] rounded-xl p-5 justify-center">
           <View className="flex-row w-[100%] justify-between mb-2">
             <Text className="font-rRegular text-base">Available Balance</Text>
-            <TouchableOpacity>
-              <AntDesign name="eye" size={20} color="black" />
+            <TouchableOpacity onPress={handleEyeClicked}>
+            <Entypo name={eyeClicked ? "eye" : "eye-with-line"} size={22} color="black" />
             </TouchableOpacity>
           </View>
-          <Text className="font-rMedium text-4xl">₦1200</Text>
+          { eyeClicked ? <Text className="font-rMedium text-3xl">₦****</Text> : <Text className="font-rMedium text-3xl">₦1200</Text>}
         </View>
 
       </View>

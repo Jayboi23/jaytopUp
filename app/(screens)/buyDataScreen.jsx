@@ -1,7 +1,8 @@
 import { View, Text,TextInput } from 'react-native'
-import React from 'react'
+import React,{useState} from 'react'
 import { SelectList } from "react-native-dropdown-select-list";
 import Button from "../../components/CustomButton"
+import CustomModal from "../../components/CustomModal";
 
 const data = [
   { key: "1", value: "MTN" },
@@ -11,6 +12,18 @@ const data = [
 ];
 
 export default function buyDataScreen() {
+  const [selected, setSelected] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+  
+    const handleOpenModal =  () =>{
+      setOpenModal(!openModal)
+    } 
+  
+    const handleCloseModal =  () =>{
+      setOpenModal(!openModal)
+    } 
+
+
   return (
     <View className="px-3 bg-white flex-1">
     
@@ -42,12 +55,18 @@ export default function buyDataScreen() {
     title="Buy"
     containerStyle="bg-primary w-full self-center h-14"
     textStyles="text-white"
+    handlePress={handleOpenModal}
     />
 
     <View className="self-center items-center justify-center bottom-12 absolute">
       <Text className="font-rBold text-xl text-primary">JayTopUp</Text>
       <Text className="font-rMedium text-base text-gray-500">1.0.0</Text>
     </View>
+
+    {openModal && (<CustomModal
+          modalType="buyData"
+          closeModal={handleCloseModal}
+          />)}
 
   </View>
   )

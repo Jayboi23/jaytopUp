@@ -31,7 +31,7 @@ export default function Index() {
 
       <View className="bg-red-500 w-full">
      
-        <Image className="absolute -right-6 top-44"  source={images.Footer}/>
+        <Image className="absolute -right-6 top-48"  source={images.Footer}/>
       </View>
     </View>
   );
