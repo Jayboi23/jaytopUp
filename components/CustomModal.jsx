@@ -2,31 +2,36 @@ import { View, Text, Modal } from "react-native";
 import React, { useState } from "react";
 import CustomButton from "../components/CustomButton";
 import { router } from "expo-router";
+import Animated, { Easing, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
-export default function CustomModal({ modalType, closeModal }) {
+export default function CustomModal({ modalType, closeModal, network_id, network, phone, amount }) {
 
     const handleGotoPinScreen = () =>{
-        router.push("/pinScreen")
+        router.push({pathname: "/pinScreen", params:{network_id: network_id, amount: amount, phone: phone} })
         closeModal()
     }
   return (
     <Modal
       transparent={true}
       animationType="fade"
-      className="absolute left-0 top-0 right-0 bottom-0"
+      className="absolute left-0 top-0 bg-black right-0 bottom-0"
     >
       {modalType === "buyAirtime" ? (
         <View className=" bg-black/50 flex-1">
-          <View className="bg-white w-20 h-2 absolute mt-[470] self-center rounded-full" />
-          <View className="bg-white w-full h-[45%] bottom-0 rounded-r-3xl rounded-l-3xl p-5 absolute">
-            <Text className="text-xl font-rBold text-primary  mb-5 mt-3">
+          
+        
+
+          <Animated.View entering={SlideInDown.duration(800)} exiting={SlideOutDown.duration(800)} className="bg-white w-full h-[45%] bottom-0 rounded-r-3xl rounded-l-3xl p-5 absolute">
+          <View className="bg-white -mt-10 w-20 h-2 self-center rounded-full" />
+
+            <Text className="text-xl font-rBold text-primary  mb-5 mt-10">
               Transaction Details
             </Text>
 
             <View className="flex-row items-center justify-between mb-3">
               <Text className="font-rMedium text-lg">Mobile Number</Text>
               <Text className="font-rRegular text-placeHolderText text-lg">
-                08156136183
+                {phone}
               </Text>
             </View>
 
@@ -35,7 +40,7 @@ export default function CustomModal({ modalType, closeModal }) {
             <View className="flex-row items-center justify-between mt-3 mb-3">
               <Text className="font-rMedium text-lg">Network provider</Text>
               <Text className="font-rRegular text-placeHolderText text-lg">
-                GLO
+                {network}
               </Text>
             </View>
 
@@ -44,7 +49,7 @@ export default function CustomModal({ modalType, closeModal }) {
             <View className="flex-row items-center justify-between mt-3 mb-3">
               <Text className="font-rMedium text-lg">Amount</Text>
               <Text className="font-rRegular text-placeHolderText text-lg">
-                ₦500
+                ₦{amount}
               </Text>
             </View>
 
@@ -62,7 +67,7 @@ export default function CustomModal({ modalType, closeModal }) {
             <View className="flex-row items-center justify-between mt-3 mb-10">
               <Text className="font-rMedium text-lg">Amount to pay</Text>
               <Text className="font-rRegular text-placeHolderText text-lg">
-                ₦500.00
+                ₦{amount}
               </Text>
             </View>
 
@@ -81,7 +86,8 @@ export default function CustomModal({ modalType, closeModal }) {
                 handlePress={handleGotoPinScreen}
               />
             </View>
-          </View>
+          </Animated.View>
+
         </View>
       ) : 
       

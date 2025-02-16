@@ -1,12 +1,16 @@
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import React, {useState, useRef} from 'react'
 import CustomButton from "../../components/CustomButton"
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { postBuyAirtime } from '../../APIs/buyAirtime';
 
 const CELL_COUNT = 4; // Number of PIN digits
 
 export default function pinScreen() {
+  const { network_id, amount, phone } = useLocalSearchParams();
+
     const [pin, setPin] = useState(Array(CELL_COUNT).fill('')); // Array to store PIN digits
+    const [error1, setError1] = useState("")
     const inputs = useRef([]); // Refs for each TextInput
   
     // Handle text change in a specific input
@@ -19,11 +23,6 @@ export default function pinScreen() {
       if (text && index < CELL_COUNT - 1) {
         inputs.current[index + 1].focus();
       }
-  
-      // If the last input is filled, submit the PIN
-      if (index === CELL_COUNT - 1 && text) {
-        handleSubmit(newPin.join(''));
-      }
     };
   
     // Handle backspace to move focus to the previous input
@@ -32,11 +31,36 @@ export default function pinScreen() {
         inputs.current[index - 1].focus();
       }
     };
+
+
+  const handleErrorTimeOut = () =>{
+    setTimeout(()=>{
+      setError1("")
+    },3000)
+  }
   
     // Handle PIN submission
-    const handleSubmit = (enteredPin) => {
-      // Alert.alert('PIN Entered', `You entered: ${enteredPin}`);
-      router.push("/successScreen")
+    const handleSubmit = async (enteredPin) => {
+
+      if (network_id && amount && phone) {
+        
+        if (enteredPin === "" || enteredPin !== "1234") {
+          setError1("Incorrect pin")
+          handleErrorTimeOut();
+          return;
+        }else {
+          try{
+            const airtimePurchase = await postBuyAirtime(network_id, amount, phone)
+            const history = airtimePurchase;
+            console.log("History Response", history)
+              router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2)}})
+          }catch(error){
+            console.error(error)
+          }
+        }
+    
+      }
+      
 
       // Add your logic to verify the PIN here
     };
@@ -62,6 +86,7 @@ export default function pinScreen() {
           />
         ))}
     </View>
+    {error1 && (<Text className=" text-red-500 text-lg font-rRegular">{error1}</Text>)}
     {/* <TouchableOpacity className="bg-primary w-[50%] h-14" onPress={() => handleSubmit(pin.join(''))}>
       <Text >Submit</Text>
     </TouchableOpacity> */}
