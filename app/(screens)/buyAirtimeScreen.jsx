@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, Keyboard } from "react-native";
+import { View, Text, TextInput, Pressable, Keyboard, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 import Button from "../../components/CustomButton";
@@ -22,14 +22,17 @@ export default function buyAirtimeScreen() {
   const [error1, setError1] = useState("")
   const [error2, setError2] = useState("")
   const [error3, setError3] = useState("")
+   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchNetworks = async () => {
+      setIsLoading(true)
       const networks = await fetchNetworkList();
       const networksfiltered = networks.filter(
         (item) => item.value !== "SMILE"
       );
       setNetworkLists(networksfiltered);
+      setIsLoading(false)
     };
       fetchNetworks();
   }, []);
@@ -127,6 +130,10 @@ export default function buyAirtimeScreen() {
   const handleSubmit = async () =>{
     handleFieldsCheck()
   }
+
+  if (isLoading){
+      return <View className="flex-1 justify-center items-center bg-white"><ActivityIndicator size="small"/></View>
+    }
 
   return (
     <GestureHandlerRootView>

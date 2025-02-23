@@ -13,7 +13,8 @@ export default function sucessScreen() {
       
       <View className="bg-bgButton/40 bottom-[40] rounded-xl w-[95%] gap-y-3 p-5 items-center justify-center">
       <Text  className="font-rMedium  text-xl">Transaction Successful</Text>
-      <Text className="font-rRegular text-lg text-center">Airtime purchased for <Text className="font-rBold">{historyData.mobile_number}</Text> has been sent.</Text>
+
+      {historyData.plan ?  <Text className="font-rRegular text-lg text-center">Data purchased for <Text className="font-rBold">{historyData.mobile_number}</Text> has been sent.</Text> :       <Text className="font-rRegular text-lg text-center">Airtime purchased for <Text className="font-rBold">{historyData.mobile_number}</Text> has been sent.</Text>}
       </View>
       
       <Animated.View entering={BounceIn.delay(200).duration(2000)} className="bg-primary/30 w-40 h-40 z-10 top-[190] absolute items-center justify-center rounded-full">
@@ -22,7 +23,7 @@ export default function sucessScreen() {
         </View>
       </Animated.View>
 
-      <View className="bg-bgButton/40 w-[95%] h-[60%] rounded-xl p-5 mt-10">
+      <View className="bg-bgButton/40 w-[95%] h-[65%] rounded-xl p-5 mt-5">
 
       <Text className="text-xl font-rBold text-primary  mb-5 mt-36">
                     Transaction Details
@@ -31,7 +32,7 @@ export default function sucessScreen() {
                   <View className="flex-row items-center justify-between mb-3">
                     <Text className="font-rMedium text-base">Transaction ID</Text>
                     <Text className="font-rRegular text-placeHolderText text-base">
-                    {historyData.ident.slice}
+                    {historyData.ident.slice(0,25)}
                     </Text>
                   </View>
       
@@ -53,8 +54,17 @@ export default function sucessScreen() {
       
                   <View className="w-full h-[1] bg-bgButton" />
 
+                  {historyData.plan ?  <View className="flex-row items-center justify-between mt-3 mb-3">
+                    <Text className="font-rMedium text-base">Plan size</Text>
+                    <Text className="font-rRegular text-placeHolderText text-base">
+                      {historyData.plan_name}
+                    </Text>
+                  </View>: null}
+
+                  {historyData.plan ? <View className="w-full h-[1] bg-bgButton" /> : null}
+
                   <View className="flex-row items-center justify-between mt-3 mb-3">
-                    <Text className="font-rMedium text-base">Airtime amount</Text>
+                    {historyData.plan ? <Text className="font-rMedium text-base">Plan amount</Text> : <Text className="font-rMedium text-base">Airtime amount</Text>}
                     <Text className="font-rRegular text-placeHolderText text-base">
                     ₦{historyData.plan_amount}
                     </Text>
@@ -73,19 +83,25 @@ export default function sucessScreen() {
       
                   <View className="flex-row items-center justify-between mt-3 mb-3">
                     <Text className="font-rMedium text-base">Transaction fee</Text>
-                    <Text className="font-rRegular text-placeHolderText text-base">
+                   {historyData.plan ?  <Text className="font-rRegular text-placeHolderText text-base">
+                      ₦20.00
+                    </Text> :  <Text className="font-rRegular text-placeHolderText text-base">
                       ₦0.00
-                    </Text>
+                    </Text>}
                   </View>
       
                   <View className="w-full h-[1] bg-bgButton" />
       
                   <View className="flex-row items-center justify-between mt-3 mb-3">
                     <Text className="font-rMedium text-base">Amount paid</Text>
-                    <Text className="font-rRegular text-placeHolderText text-base">
-                      ₦{historyData.amount}
-                    </Text>
+                   {historyData.plan ?  <Text className="font-rRegular text-placeHolderText text-base">
+                      ₦{parseInt(historyData.plan_amount) + parseInt(20)}.00
+                    </Text> :  <Text className="font-rRegular text-placeHolderText text-base">
+                      ₦{historyData.plan_amount}
+                    </Text>}
                   </View>
+
+                  <View className="w-full h-[1] bg-bgButton" />
 
                   <View className="flex-row items-center justify-between mt-3 mb-3">
                     <Text className="font-rMedium text-base">Date</Text>

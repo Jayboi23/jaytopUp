@@ -3,11 +3,12 @@ import React, {useState, useRef} from 'react'
 import CustomButton from "../../components/CustomButton"
 import { router, useLocalSearchParams } from 'expo-router';
 import { postBuyAirtime } from '../../APIs/buyAirtime';
+import { postBuyData } from '../../APIs/buyData';
 
 const CELL_COUNT = 4; // Number of PIN digits
 
 export default function pinScreen() {
-  const { network_id, amount, phone } = useLocalSearchParams();
+  const { network_id, amount, phone, plan_id } = useLocalSearchParams();
 
     const [pin, setPin] = useState(Array(CELL_COUNT).fill('')); // Array to store PIN digits
     const [error1, setError1] = useState("")
@@ -59,6 +60,15 @@ export default function pinScreen() {
           }
         }
     
+      }else if (network_id && phone && plan_id) {
+        try{
+          const airtimePurchase = await postBuyData(network_id, phone, plan_id);
+          const history = airtimePurchase;
+          console.log("History Response", history)
+            router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2)}})
+        }catch(error){
+          console.error(error)
+        }
       }
       
 
