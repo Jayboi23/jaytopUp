@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const postBuyData = async (network_id, phone, plan_id) =>{
-    const url = "https://jaytopup-backend.onrender.com/buyData"
+    const url = "https://jaytopup-backend.onrender.com/api/buy-data"
 
     const data =  {
         "network_id": network_id,

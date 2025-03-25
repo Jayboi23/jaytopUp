@@ -49,7 +49,7 @@ const RootLayout = () => {
  
   <Stack>
          <Stack.Screen name='index' options={{headerShown: false}} />
-         <Stack.Screen name='(screens)' options={{headerShown: false}}/>
+         <Stack.Screen name='(screens)' options={{headerShown: false, gestureEnabled: false}}/>
          <Stack.Screen name='(onboarding)' options={{headerShown: false}}/>
     </Stack>
 
