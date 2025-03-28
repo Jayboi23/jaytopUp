@@ -7,7 +7,7 @@ import Swiper from 'react-native-swiper'
 import { router, useLocalSearchParams } from "expo-router";
 import { getCurrentUser } from "../../APIs/getCurrrentUser";
 import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function home() {
   const [eyeClicked, setEyeClicked] = useState(false)
@@ -74,11 +74,11 @@ export default function home() {
       <View className="mt-24 flex-row justify-around mb-5">
         <CardItem textIcon="₦" title="Fund Wallet" handlePress={() => router.push({ pathname: "/fundingScreen", params: {id: id, displayName: displayName}})}/>
 
-        <CardItem icon="call" title="Buy Airtime" handlePress={() => router.push("/buyAirtimeScreen")}/>
+        <CardItem icon="call" title="Buy Airtime" handlePress={() => router.push({pathname: "/buyAirtimeScreen", params: {id: id, walletBalance: walletBalance}})}/>
 
         <CardItem icon="cell-wifi" title="Buy Data" handlePress={() => router.push("/buyDataScreen")}/>
 
-        <CardItem icon="history" title="View History" handlePress={() => router.push("/historyScreen")}/>
+        <CardItem icon="history" title="View History" handlePress={() => router.push({pathname:"/historyScreen", params:{id: id}})}/>
       </View>
 
       <View className="w-[95%] self-center h-[15%]">

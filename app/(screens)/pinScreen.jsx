@@ -4,11 +4,12 @@ import CustomButton from "../../components/CustomButton"
 import { router, useLocalSearchParams } from 'expo-router';
 import { postBuyAirtime } from '../../APIs/buyAirtime';
 import { postBuyData } from '../../APIs/buyData';
+import { updateBalane } from '../../APIs/updateBalance';
 
 const CELL_COUNT = 4; // Number of PIN digits
 
 export default function pinScreen() {
-  const { network_id, amount, phone, plan_id } = useLocalSearchParams();
+  const { network_id, amount, phone, plan_id, id } = useLocalSearchParams();
 
     const [pin, setPin] = useState(Array(CELL_COUNT).fill('')); // Array to store PIN digits
     const [error1, setError1] = useState("")
@@ -39,6 +40,24 @@ export default function pinScreen() {
       setError1("")
     },3000)
   }
+
+  let newRef = ""
+  let tAmonut = ""
+  let tType = ""
+  let tRecpientNumber = ""
+  let tPlanNetwork = ""
+  let tPlanName = ""
+
+
+  const handleWalletUpdate = async (newRef, tAmonut, tType, tRecpientNumber, tPlanNetwork ) =>{
+    const type = "debit"
+    const ref = newRef
+    try{
+        await updateBalane(id, amount, type, ref, tAmonut, tType, tRecpientNumber, tPlanNetwork)
+    }catch (error){
+      Alert.alert(error.message)
+    }
+  }
   
     // Handle PIN submission
     const handleSubmit = async (enteredPin) => {
@@ -53,8 +72,14 @@ export default function pinScreen() {
           try{
             const airtimePurchase = await postBuyAirtime(network_id, amount, phone)
             const history = airtimePurchase;
-            console.log("History Response", history)
-              router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2)}})
+            console.log("History", history)
+            newRef = history.ident
+            tRecpientNumber = history.mobile_number
+            tAmonut = history.plan_amount
+            tType = history.airtime_type
+            tPlanNetwork = history.plan_network
+            handleWalletUpdate(newRef, tRecpientNumber, tAmonut, tType, tPlanNetwork)
+              router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2), id: id}})
           }catch(error){
             console.error(error)
           }
@@ -62,10 +87,10 @@ export default function pinScreen() {
     
       }else if (network_id && phone && plan_id) {
         try{
-          const airtimePurchase = await postBuyData(network_id, phone, plan_id);
-          const history = airtimePurchase;
+          const dataPurchase = await postBuyData(network_id, phone, plan_id);
+          const history = dataPurchase;
           console.log("History Response", history)
-            router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2)}})
+            router.push({pathname: "/successScreen", params:{transactionHistory: JSON.stringify(history, null, 2), id: id}})
         }catch(error){
           console.error(error)
         }

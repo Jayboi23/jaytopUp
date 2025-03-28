@@ -5,7 +5,8 @@ import Animated,{ BounceIn } from 'react-native-reanimated';
 import { router, useLocalSearchParams } from 'expo-router';
 
 export default function sucessScreen() {
-  const { transactionHistory } = useLocalSearchParams()
+  const { transactionHistory, id } = useLocalSearchParams()
+
   const historyData = typeof transactionHistory === "string" ? JSON.parse(transactionHistory) : transactionHistory;
 
   return (
@@ -113,7 +114,7 @@ export default function sucessScreen() {
 
                   <View className="w-full h-[1] bg-bgButton mb-14" />
 
-                  <TouchableOpacity onPress={() => router.push("/home")} className="self-center">
+                  <TouchableOpacity onPress={() => router.push({pathname: "/home", params: {id: id}})} className="self-center">
                       <Text className="text-xl text-primary font-rMedium">Done</Text>
                     </TouchableOpacity>
 

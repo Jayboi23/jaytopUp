@@ -1,13 +1,16 @@
 import axios from "axios";
 
-export const updateBalane = async (id, amount, type, ref) => {
+export const updateBalane = async (id, amount, type, ref, tType, tRecpientNumber, tPlanNetwork) => {
     const url = `https://jaytopup-backend.onrender.com/api/users/update-wallet-balance/${id}`;
 
     const data = {
         "amount": parseInt(amount),
         "reference": ref,
-        "description": type === "credit" ? "Deposited  to wallet" : "Debitted from wallet",
-        "type": type
+        "description": type === "credit" ? "Deposited  to wallet" : "Debited from wallet",
+        "type": type,
+        "tType": tType,
+        "tRecipientNumber": tRecpientNumber,
+        "tPlanNetwork": tPlanNetwork
       }
 
     try {

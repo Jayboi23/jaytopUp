@@ -1,33 +1,29 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { getCurrentUser } from "../../APIs/getCurrrentUser";
+import { useLocalSearchParams } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const data = [
-  {
-    id: "1",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-  {
-    id: "2",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-  {
-    id: "3",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-];
 
 export default function history() {
+  const { id } = useLocalSearchParams()
+    const [response, setResponse] = useState([])
+
+   useEffect(() => {
+     const getUserDetails = async () =>{
+       try{
+         const userDetails = await getCurrentUser(id)
+         setResponse(userDetails.transactions)
+       }catch(error){
+         Alert.alert(error.message)
+       }
+     }
+   
+     getUserDetails()
+    },[])
+
   const [isClicked, setIsClicked] = useState(false);
   const [radioClicked, setRadioClicked] = useState(false)
   const [radioClicked2, setRadioClicked2] = useState(false)
@@ -65,6 +61,11 @@ export default function history() {
     setRadioClicked4(true)
   }
 
+  
+  const sortedTranscations = response.sort((a,b) =>
+    new Date(b.date) - new Date(a.date)
+  )
+
   return (
     <View className="px-3 flex-1 bg-white">
       
@@ -86,19 +87,26 @@ export default function history() {
     </View>)}
    
   <ScrollView className="">
-      {data.map((item)=>(
-        <View  key={item.id} className="bg-bgButton/40 mb-2 p-3 gap-y-2 rounded-lg">
+      {sortedTranscations.length > 0 ? sortedTranscations.map((item)=>(
+        <View  key={item.reference} className="bg-bgButton/40 mb-2 p-3 gap-y-2 rounded-lg">
           <View className="flex-row justify-between">
-            <Text className="font-rMedium text-base">{item.transactionId}</Text>
-            <Text className="font-rMedium text-green-700 text-base">{item.amount}</Text>
+
+            <View className="flex-row items-center space-x-2">
+            <Text className="font-rMedium text-base">{item.reference.slice(0, 20)}</Text>
+            </View>
+
+            <Text className={`font-rMedium ${item.type === "credit" ? 'text-green-700' : 'text-red-700'}  text-base`}>{item.type === "credit" ? item.amount : -item.amount}</Text>
           </View>
 
           <View className="flex-row justify-between">
-            <Text className="font-rRegular text-base">{item.title}</Text>
-            <Text className="font-rRegular text-base">{item.timeStamp}</Text>
+            <Text className="font-rRegular text-base">{item.description}</Text>
+            <Text className="font-rRegular text-base">{new Date(item.date).toLocaleString()}</Text>
           </View>
         </View>
-      ))}
+      )) : 
+      <View className="bg-bgButton/40 items-center justify-center h-20  mb-2 p-3 gap-y-2 rounded-lg">
+        <Text className="font-rMedium text-base">Your transactions will appear here</Text>
+    </View>}
     </ScrollView>
     </View>
   

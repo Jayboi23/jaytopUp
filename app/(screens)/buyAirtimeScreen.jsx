@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, Keyboard, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, Pressable, Keyboard, ActivityIndicator, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 import Button from "../../components/CustomButton";
@@ -7,6 +7,7 @@ import { fetchNetworkList } from "../../APIs/networkList";
 import Entypo from '@expo/vector-icons/Entypo';
 import { Marquee } from '@animatereactnative/marquee';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useLocalSearchParams } from "expo-router";
 
 const GLO_PREFIX = ["0805", "0807", "0705", "0811", "0815", "0905", "0915"]
 const MTN_PREFIX = ["0803", "0703", "0903", "0806", "0706", "0813", "0810", "0814", "0816", "0903", "0906", "0913"]
@@ -14,6 +15,7 @@ const AIRTEL_PREFIX = ["0802", "0808", "0708", "0701", "0812", "0901", "0902", "
 const ETISALAT_PREFIX = ["0809", "0817", "0818", "0908", "0909" ]
 
 export default function buyAirtimeScreen() {
+  const { id, walletBalance } = useLocalSearchParams()
   const [selected, setSelected] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [networkLists, setNetworkLists] = useState("");
@@ -23,7 +25,7 @@ export default function buyAirtimeScreen() {
   const [error2, setError2] = useState("")
   const [error3, setError3] = useState("")
    const [isLoading, setIsLoading] = useState(false);
-
+console.log(amount)
   useEffect(() => {
     const fetchNetworks = async () => {
       setIsLoading(true)
@@ -122,6 +124,10 @@ export default function buyAirtimeScreen() {
       setError3("Please enter a valid phone number");
       handleErrorTimeOut();
       return;
+    }else if ( parseInt(amount) > walletBalance){
+
+      Alert.alert("Insufficient Balance", "Please fund your wallet to continue")
+      return;
     }
     prefixCheck();
   }
@@ -190,7 +196,7 @@ export default function buyAirtimeScreen() {
       </View>
 
       {openModal && (
-        <CustomModal modalType="buyAirtime" closeModal={handleCloseModal} network_id={network_id} network={selected} phone={phone} amount={amount}/>
+        <CustomModal modalType="buyAirtime" closeModal={handleCloseModal} network_id={network_id} network={selected} phone={phone} amount={amount} id={id}/>
       )}
     </Pressable>
     </GestureHandlerRootView>

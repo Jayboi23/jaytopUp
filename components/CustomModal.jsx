@@ -4,15 +4,15 @@ import CustomButton from "../components/CustomButton";
 import { router } from "expo-router";
 import Animated, { Easing, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
-export default function CustomModal({ modalType, closeModal, network_id, network, phone, amount, planAmount, plan_id, planType, planSize, planValidity }) {
+export default function CustomModal({ modalType, closeModal, network_id, network, phone, amount, planAmount, plan_id, planType, planSize, planValidity, id }) {
 
     const handleBuyAirtimeToPinScreen = () =>{
-        router.push({pathname: "/pinScreen", params:{network_id: network_id, amount: amount, phone: phone} })
+        router.push({pathname: "/pinScreen", params:{network_id: network_id, amount: amount, phone: phone, id: id} })
         closeModal()
     }
 
     const handleBuyDataToPinScreen = () =>{
-      router.push({pathname: "/pinScreen", params:{network_id: network_id, plan_id: plan_id, phone: phone} })
+      router.push({pathname: "/pinScreen", params:{network_id: network_id, plan_id: plan_id, phone: phone, id: id} })
       closeModal()
   }
 

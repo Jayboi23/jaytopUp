@@ -1,34 +1,10 @@
-import { View, Text, TextInput, ScrollView } from "react-native";
-import React, {useRef, useState} from "react";
+import { View, Text, TextInput, ScrollView, Alert } from "react-native";
+import React, {useRef, useState, useEffect} from "react";
 import Button from "../../components/CustomButton";
 import  { Paystack , paystackProps}  from 'react-native-paystack-webview';
 import { router, useLocalSearchParams } from "expo-router";
 import { updateBalane } from "../../APIs/updateBalance";
-
-
-const data = [
-  {
-    id: "1",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-  {
-    id: "2",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-  {
-    id: "3",
-    title: "Deposited to wallet",
-    amount: "+500",
-    timeStamp: "09:08 pm",
-    transactionId: "PAYSTACK1753211532",
-  },
-];
+import { getCurrentUser } from "../../APIs/getCurrrentUser";
 
 export default function fundingScreen() {
   const { id, displayName } = useLocalSearchParams()
@@ -46,13 +22,13 @@ export default function fundingScreen() {
 
   const paystackWebViewRef = useRef(paystackProps.PayStackRef); 
 
-  const handleUpdateBalance = async (res) =>{
-    const newRef = res.transactioRef.reference
-    console.log("Ref:", newRef)
+  let newRef = ""
+
+  const handleUpdateBalance = async (newRef) =>{
+    const ref =  newRef;
     try{
       const response = await updateBalane(id, amount, type, ref )
       setResponse(response.transactions)
-      console.log(response.transactions)
     }catch(error){
       Alert.alert(error.message)
     }
@@ -64,6 +40,19 @@ export default function fundingScreen() {
       setError2(false)
     },3000)
   }
+
+ useEffect(() => {
+   const getUserDetails = async () =>{
+     try{
+       const userDetails = await getCurrentUser(id)
+       setResponse(userDetails.transactions)
+     }catch(error){
+       Alert.alert(error.message)
+     }
+   }
+ 
+   getUserDetails()
+  },[])
 
   const validateEmail = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
@@ -90,10 +79,14 @@ export default function fundingScreen() {
     paystackWebViewRef.current?.startTransaction();
   };
 
+  const sortedResponse = response.sort((a,b)  => 
+    new Date(b.date) - new Date(a.date)
+  ).filter((item) => item.type !== "debit").slice(0,3)
+
   return (
     <View className="flex-1 bg-white px-3">
        <Paystack
-        paystackKey=""
+        paystackKey="pk_test_35643d0289fe5761c9451a877eedda572764b379"
         billingName={displayName}
         billingEmail={email}
         amount={amount}
@@ -104,7 +97,8 @@ export default function fundingScreen() {
         }}
         onSuccess={(res) => {
           // handle response here
-          handleUpdateBalance(res)
+          newRef = res.transactionRef.reference
+          handleUpdateBalance(newRef)
         }}
         ref={paystackWebViewRef}
       />
@@ -156,8 +150,8 @@ export default function fundingScreen() {
        
         <ScrollView alwaysBounceVertical={false} className="">
         
-            {response.map((item) => (
-              <View key={item.id} className="w-full p-3 bg-bgButton/40 mb-3 gap-y-2 rounded-lg">
+            {sortedResponse.length > 0 ? sortedResponse.map((item) => (
+              <View key={item.reference} className="w-full p-3 bg-bgButton/40 mb-3 gap-y-2 rounded-lg">
                 <View className="flex-row justify-between">
                   <Text className="font-rMedium text-base">{item.reference}</Text>
                   <Text className="font-rMedium text-base text-green-700">{item.amount}</Text>
@@ -165,10 +159,13 @@ export default function fundingScreen() {
 
                 <View className="flex-row justify-between">
                   <Text className="font-rRegular text-base">{item.description}</Text>
-                  <Text className="font-rRegular text-base">12:30 pm</Text>
+                  <Text className="font-rRegular text-base">{new Date(item.date).toLocaleString()}</Text>
                 </View>
               </View>
-            ))}
+            )): 
+            <View className="bg-bgButton/40 items-center justify-center h-20  mb-2 p-3 gap-y-2 rounded-lg">
+                    <Text className="font-rMedium text-base">Your transactions will appear here</Text>
+                </View>}
       
         </ScrollView>
       </View>
